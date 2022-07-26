@@ -35,6 +35,10 @@ app.post('/notes', (req, res) => {
         savedData = JSON.parse(data);
         savedData.push(req.body);
         console.log(savedData);
+
+        fs.writeFile('./db/db.json', savedData, err => {
+            err ? console.log(err) : console.log('Successfully written');
+        })
     })
 })
 
