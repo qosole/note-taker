@@ -56,13 +56,19 @@ const renderActiveNote = () => {
   if (activeNote.id) {
     noteTitle.setAttribute('readonly', true);
     noteText.setAttribute('readonly', true);
-    noteTitle.value = activeNote.title;
-    noteText.value = activeNote.text;
+    noteTitle.value = '';
+    noteText.value = '';
   } else {
     noteTitle.removeAttribute('readonly');
     noteText.removeAttribute('readonly');
-    noteTitle.value = '';
-    noteText.value = '';
+    noteTitle.value = activeNote.title;
+    noteText.value = activeNote.text;
+    if (noteTitle.value == 'undefined') {
+      noteTitle.value = '';
+    }
+    if (noteText.value == 'undefined') {
+      noteText.value = '';
+    }
   }
 };
 
