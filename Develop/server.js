@@ -23,9 +23,11 @@ app.get('/notes', (req, res) => {
     res.sendFile(path.join(__dirname, '/public/notes.html'))
 });
 
-// Main page saving notes to db.json
-app.post('/notes', (req, res) => {
-    console.log('hi');
+
+// API routes
+// Saving notes to db.json
+app.post('/api/notes', (req, res) => {
+    console.log(`${req.method} request received for /api/notes`);
     let savedData = [];
     fs.readFile('./db/db.json', 'utf-8', (err, data) => {
         if (err) {
@@ -36,11 +38,26 @@ app.post('/notes', (req, res) => {
         savedData.push(req.body);
         console.log(savedData);
 
-        fs.writeFile('./db/db.json', savedData, err => {
+        fs.writeFile('./db/db.json', JSON.stringify(savedData), err => {
             err ? console.log(err) : console.log('Successfully written');
-        })
+        });
+    });
+    // Refreshing the page so that the note will appear in the left column and the fields will be cleared
+    res.redirect('back'); 
+});
+
+// Getting saved notes
+app.get('/api/notes', (req, res) => {
+    console.log(`${req.method} request received for /api/notes`);
+    fs.readFile('./db/db.json', 'utf-8', (err, data) => {
+        if (err) {
+            console.log(err);
+        }
+
+        res.json(JSON.parse(data));
     })
 })
+
 
 app.listen(PORT, () =>
   console.log(`App listening at http://localhost:${PORT} 🚀`)
